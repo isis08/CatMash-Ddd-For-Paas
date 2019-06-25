@@ -15,3 +15,6 @@ Domain model layers :
 
 
 Inside the API, a "CatDddController" is refactored in order to use Domain model logic, whereas "CatController" use the transaction script oriented logic
+
+
+WARNING : Folder "Specification" under "CatMash.Core.Domain" contains classes for query logic centralization and factorization. In the future we will implement a specification pattern
