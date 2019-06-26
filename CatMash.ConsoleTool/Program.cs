@@ -21,7 +21,7 @@ namespace CatMash.ConsoleTool
             "Server=tcp:catmash-server.database.windows.net,1433;Initial Catalog=CatMash;Persist Security Info=False;User ID=dbadmin;Password=Azerty123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         static void Main(string[] args)
         {
-            var cats = DesirializeCats();
+            var cats = DeserializeCats();
             var furs = new List<string>();
 
             foreach (var value in Enum.GetValues(typeof(FurTypesEnum)))
@@ -110,7 +110,7 @@ namespace CatMash.ConsoleTool
             }
         }
 
-    private static IEnumerable<Cat> DesirializeCats()
+    private static IEnumerable<Cat> DeserializeCats()
     {
         var cats = new List<Cat>();
         using (StreamReader reader = new StreamReader("Cats.json"))
