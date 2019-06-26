@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using CatMash.Business.Services;
 using CatMash.DAL;
@@ -14,6 +16,7 @@ using Microsoft.Extensions.Options;
 using NLog;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace CatMash.Api
 {
@@ -39,6 +42,15 @@ namespace CatMash.Api
                     });
             });
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "CatMash API", Version = "v1" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
             services.AddMvc();
             services.AddSingleton(Configuration);
 
@@ -54,6 +66,7 @@ namespace CatMash.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+           
             app.UseCors(AllowOrigins);
             app.UseMvc();
 
@@ -64,6 +77,14 @@ namespace CatMash.Api
                 IndentSize = 4,
                 Name = "MyNLogTraceListener"
             });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatMash API V1");
+            });
+            app.Run(async (context) => await Task.Run(() => context.Response.Redirect("/swagger")));
+
         }
     }
 }
