@@ -1,7 +1,9 @@
 ﻿namespace CatMash.API.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using CatMash.Core.Domain.DomainService;
     using CatMash.Core.Domain.Entity;
@@ -27,6 +29,9 @@
         }
 
         [HttpGet, Route("{catId}", Name = "GetCat")]
+        [ProducesResponseType(typeof(CatEntity), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetCat(int catId)
         {
             var parameters = new SelectOneCatParameters(catId);
@@ -41,6 +46,9 @@
         }
 
         [HttpGet(Name = "GetCats")]
+        [ProducesResponseType(typeof(List<CatEntity>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetCats()
         {
             //--
@@ -59,6 +67,9 @@
         }
 
         [HttpGet, Route("{furType}", Name = "GetCatsByFurType")]
+        [ProducesResponseType(typeof(List<CatEntity>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetCatsByFurType(FurTypesValueObject furType)
         {
             //--
@@ -76,6 +87,9 @@
         }
 
         [HttpGet, Route("random", Name = "GetTwoRandomCats")]
+        [ProducesResponseType(typeof(List<CatEntity>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetTwoRandomCats()
         {
             var cats = await catService.RetrieveTwoRandomCats();
@@ -89,6 +103,9 @@
         }
 
         [HttpGet, Route("random/{furType}", Name = "GetTwoRandomCatsByFur")]
+        [ProducesResponseType(typeof(List<CatEntity>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetTwoRandomCatsByFur(FurTypesValueObject furType)
         {
             var cats = await catService.RetrieveTwoRandomCats(furType);
@@ -102,6 +119,9 @@
         }
 
         [HttpPatch(Name = "PatchTwoCats")]
+        [ProducesResponseType(typeof(CatEntity), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> PatchCatsScores([FromBody] PayloadPoco cats)
         {
             var winner = cats.Winner;
